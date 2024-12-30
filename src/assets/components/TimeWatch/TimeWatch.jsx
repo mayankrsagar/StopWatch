@@ -10,6 +10,7 @@ const TimeWatch = () => {
 
   useEffect(() => {
     let timer;
+
     if (start) {
       timer = setInterval(() => {
         setTime((prev) => {
@@ -21,30 +22,24 @@ const TimeWatch = () => {
         });
       }, 1000);
     }
-    // else {
-    //     clearInterval(timer);
-    // } The timer variable is scoped inside the useEffect hook, and when start changes,
-    //  the previous interval reference might be lost because timer is re-initialized on every re-render.
 
-    return () => {
-      clearInterval(timer);
-    };
+    // Cleanup the timer when `start` is false or when component unmounts
+    return () => clearInterval(timer);
   }, [start]);
 
   const handleReset = () => {
     setTime({ minute: 0, seconds: 0 });
-    setStart(false); // Stop the timer on reset
+    setStart(false); 
   };
 
   return (
     <Fragment>
       <h1>Stopwatch</h1>
       <p>
-        Time {time.minute}:
-        {time.seconds < 10 ? `0${time.seconds}` : time.seconds}
+        Time: {time.minute}:{time.seconds < 10 ? `0${time.seconds}` : time.seconds}
       </p>
       <button onClick={() => setStart((prev) => !prev)}>
-        {start ? "Stop" : "Start"}
+        {start ? 'Stop' : 'Start'}
       </button>
       <button onClick={handleReset}>Reset</button>
     </Fragment>
